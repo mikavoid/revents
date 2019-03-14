@@ -1,0 +1,20 @@
+[ignore]
+.*/node_modules/.*
+.*/semantic/.*
+.*/src/serviceWorker\.js
+.*/src/index\.js
+.*\.test\.js
+
+[include]
+
+[libs]
+declare module 'semantic-ui-react' {
+   declare var exports: 'semantic-ui-react';
+}
+
+[lints]
+
+[options]
+all=true
+
+[strict]

@@ -1,14 +1,20 @@
-/** @format */
+//@flow
 
 import React, { Component } from 'react'
+import { Container } from 'semantic-ui-react'
 import EventDashboard from '../../features/event/EventDashboard/EventDashboard'
+import NavBar from '../../features/nav/NavBar/NavBar'
 
-class App extends Component {
+type TextProps = {}
+
+class App extends Component<TextProps> {
   render() {
     return (
       <div>
-        <h1>Re-vents</h1>
-        <EventDashboard />
+        <NavBar />
+        <Container className="main">
+          <EventDashboard />
+        </Container>
       </div>
     )
   }

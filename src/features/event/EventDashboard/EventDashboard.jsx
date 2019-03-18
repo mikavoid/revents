@@ -9,7 +9,7 @@ const events = [
   {
     id: '1',
     title: 'Trip to Tower of London',
-    date: '2018-03-27T11:00:00+00:00',
+    date: '2018-03-27',
     category: 'culture',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -33,7 +33,7 @@ const events = [
   {
     id: '2',
     title: 'Trip to Punch and Judy Pub',
-    date: '2018-03-28T14:00:00+00:00',
+    date: '2018-03-28',
     category: 'drinks',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -59,21 +59,23 @@ const events = [
 type Props = {}
 type State = {
   events: Array<any>,
-  isOpen: boolean
+  isOpen: boolean,
+  selectedEvent: any
 }
 
 class EventDashboard extends Component<Props, State> {
   state = {
     events: events,
-    isOpen: false
+    isOpen: false,
+    selectedEvent: null
   }
 
   handleFormOpen = () => {
-    this.setState({ isOpen: true })
+    this.setState({ isOpen: true, selectedEvent: null })
   }
 
   handleFormCancel = () => {
-    this.setState({ isOpen: false })
+    this.setState({ isOpen: false, selectedEvent: null })
   }
 
   handleCreateEvent = (event: any) => {
@@ -87,16 +89,52 @@ class EventDashboard extends Component<Props, State> {
     console.log('Creating event', updatedEvents)
   }
 
+  handleOpenEvent = (eventToOpen: any) => {
+    console.log('event to update', eventToOpen)
+    this.setState({
+      selectedEvent: eventToOpen,
+      isOpen: true
+    })
+  }
+
+  handleUpdateEvent = (eventToUpdate: any) => {
+    const events = [...this.state.events]
+    const idx = events.findIndex(x => x.id === eventToUpdate.id)
+    if (idx >= 0) {
+      events[idx] = { ...events[idx], ...eventToUpdate }
+      this.setState({
+        events,
+        isOpen: false,
+        selectedEvent: null
+      })
+    }
+  }
+
+  handleDeleteEvent = (eventId: any) => {
+    const updatedEvents = this.state.events.filter(e => e.id !== eventId)
+    this.setState({
+      events: updatedEvents
+    })
+  }
+
   render() {
-    const { isOpen = false, events = [] } = this.state
+    const { isOpen = false, events = [], selectedEvent = null } = this.state
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList events={events} />
+          <EventList onEventDelete={this.handleDeleteEvent} onEventOpen={this.handleOpenEvent} events={events} />
         </Grid.Column>
         <Grid.Column width={6}>
           <Button onClick={this.handleFormOpen} content="Create Event" positive />
-          {isOpen ? <EventForm handleSubmit={this.handleCreateEvent} handleCancel={this.handleFormCancel} /> : null}
+          {isOpen ? (
+            <EventForm
+              selectedEvent={selectedEvent}
+              handleDeleteEvent={this.handleDeleteEvent}
+              handleUpdateEvent={this.handleUpdateEvent}
+              handleSubmit={this.handleCreateEvent}
+              handleCancel={this.handleFormCancel}
+            />
+          ) : null}
         </Grid.Column>
       </Grid>
     )

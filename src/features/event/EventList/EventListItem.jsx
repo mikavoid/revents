@@ -3,6 +3,8 @@ import { Segment, Icon, Item, List, Button } from 'semantic-ui-react'
 import EventListAttendee from './EventListAttendee'
 
 type Props = {
+  onEventOpen: any => void,
+  onEventDelete: any => void,
   event: {
     id: string,
     title: string,
@@ -18,7 +20,15 @@ type Props = {
 }
 
 function EventListItem(props: Props) {
-  const { event } = props
+  const { event, onEventOpen, onEventDelete } = props
+  const handleEventOpen = () => {
+    return onEventOpen(event)
+  }
+  const handleEventDelete = () => {
+    if (event.id) {
+      return onEventDelete(event.id)
+    }
+  }
   return (
     <Segment.Group>
       <Segment>
@@ -49,7 +59,8 @@ function EventListItem(props: Props) {
       </Segment>
       <Segment clearing>
         {event.description}
-        <Button as="a" color="teal" floated="right" content="View" />
+        <Button onClick={handleEventDelete} as="a" color="red" floated="right" content="Delete" />
+        <Button onClick={handleEventOpen} as="a" color="teal" floated="right" content="View" />
       </Segment>
     </Segment.Group>
   )

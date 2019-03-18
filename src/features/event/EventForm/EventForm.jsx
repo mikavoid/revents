@@ -3,22 +3,44 @@ import { Segment, Form, Button } from 'semantic-ui-react'
 
 type Props = {
   handleCancel: (event: SyntheticEvent<HTMLButtonElement>) => void,
-  handleSubmit: (event: any) => void
+  handleUpdateEvent: (event: SyntheticEvent<HTMLButtonElement>) => void,
+  handleSubmit: (event: any) => void,
+  selectedEvent: Object
 }
 
 type State = {
-  event: Object
+  event: Object,
+  selectedEvent: Object
+}
+
+const emptyEvent = {
+  title: '',
+  date: '',
+  city: '',
+  venue: '',
+  hostedBy: ''
 }
 
 class EventForm extends Component<Props, State> {
   state = {
-    event: {
-      title: '',
-      date: '',
-      city: '',
-      venue: '',
-      hostedBy: ''
+    selectedEvent: null,
+    event: emptyEvent
+  }
+
+  componentDidMount() {
+    if (this.props.selectedEvent !== null) {
+      this.setState({ event: this.props.selectedEvent })
     }
+  }
+
+  static getDerivedStateFromProps(nextProps: any, prevState: any) {
+    console.log({ nextProps, prevState })
+    if (nextProps.selectedEvent !== prevState.selectedEvent) {
+      return {
+        event: nextProps.selectedEvent || emptyEvent,
+        selectedEvent: nextProps.selectedEvent || null
+      }
+    } else return null
   }
 
   handleInputChanged = (e: any) => {
@@ -37,7 +59,7 @@ class EventForm extends Component<Props, State> {
 
   handleFormSubmit = (event: any) => (e: any) => {
     e.preventDefault()
-    return this.props.handleSubmit(event)
+    return this.props.selectedEvent ? this.props.handleUpdateEvent(event) : this.props.handleSubmit(event)
   }
 
   render() {
@@ -69,6 +91,7 @@ class EventForm extends Component<Props, State> {
           <Button positive type="submit">
             Submit
           </Button>
+          handleDeleteEvent
           <Button type="button" onClick={handleCancel}>
             Cancel
           </Button>

@@ -1,5 +1,3 @@
-//@flow
-
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import EventDashboard from '../../features/event/EventDashboard/EventDashboard'

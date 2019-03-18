@@ -36,8 +36,8 @@ function EventListItem(props: Props) {
       </Segment>
       <Segment>
         <span>
-          <Icon name="clock" /> date |
-          <Icon name="marker" /> time
+          <Icon name="clock" /> {event.date} |
+          <Icon name="marker" /> {event.venue}
         </span>
       </Segment>
       <Segment secondary>
@@ -48,6 +48,7 @@ function EventListItem(props: Props) {
         </List>
       </Segment>
       <Segment clearing>
+        {event.description}
         <Button as="a" color="teal" floated="right" content="View" />
       </Segment>
     </Segment.Group>

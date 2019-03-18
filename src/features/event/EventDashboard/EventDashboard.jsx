@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Button } from 'semantic-ui-react'
+import cuid from 'cuid'
 
 import EventList from '../EventList/EventList'
 import EventForm from '../EventForm/EventForm'
@@ -56,17 +57,46 @@ const events = [
 ]
 
 type Props = {}
+type State = {
+  events: Array<any>,
+  isOpen: boolean
+}
 
-class EventDashboard extends Component<Props> {
+class EventDashboard extends Component<Props, State> {
+  state = {
+    events: events,
+    isOpen: false
+  }
+
+  handleFormOpen = () => {
+    this.setState({ isOpen: true })
+  }
+
+  handleFormCancel = () => {
+    this.setState({ isOpen: false })
+  }
+
+  handleCreateEvent = (event: any) => {
+    event.id = cuid()
+    event.hostPhotoURL = '/assets/user.png'
+    event.attendees = []
+    event.category = ''
+    event.description = ''
+    const updatedEvents = [...this.state.events, event]
+    this.setState({ events: updatedEvents })
+    console.log('Creating event', updatedEvents)
+  }
+
   render() {
+    const { isOpen = false, events = [] } = this.state
     return (
       <Grid>
         <Grid.Column width={10}>
           <EventList events={events} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <Button content="Create Event" positive />
-          <EventForm />
+          <Button onClick={this.handleFormOpen} content="Create Event" positive />
+          {isOpen ? <EventForm handleSubmit={this.handleCreateEvent} handleCancel={this.handleFormCancel} /> : null}
         </Grid.Column>
       </Grid>
     )

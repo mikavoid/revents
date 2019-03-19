@@ -91,7 +91,6 @@ class EventForm extends Component<Props, State> {
           <Button positive type="submit">
             Submit
           </Button>
-          handleDeleteEvent
           <Button type="button" onClick={handleCancel}>
             Cancel
           </Button>

@@ -42,13 +42,15 @@ class NavBar extends Component<Props, State> {
               Re-vents
             </Menu.Item>
             <Menu.Item as={NavLink} to="/events" name="Events" />
-            { authed && <>
+            <Menu.Item as={NavLink} to="/test" name="Test" />
+            {authed && (
+              <>
                 <Menu.Item as={NavLink} to="/people" name="People" />
                 <Menu.Item>
                   <Button as={Link} to="/createEvent" floated="right" positive inverted content="Create Event" />
                 </Menu.Item>
               </>
-            }
+            )}
             {authed ? <SignedInMenu handleSignOut={this.handleSignOut} /> : <SignedOutMenu handleSignIn={this.handleSignIn} />}
           </Container>
         </Menu>

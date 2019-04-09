@@ -10,6 +10,7 @@ import SettingsDashboard from '../../features/user/Settings/SettingsDashboard'
 import EventForm from '../../features/event/EventForm/EventForm'
 import NavBar from '../../features/nav/NavBar/NavBar'
 import HomePage from '../../features/home/HomePage'
+import TestComponent from '../../features/testArea/TestComponent'
 
 type TextProps = {}
 
@@ -30,10 +31,12 @@ class App extends Component<TextProps> {
                 <Switch>
                   <Route path="/events" component={EventDashboard} />
                   <Route path="/event/:id" component={EventDetailed} />
+                  <Route path="/manage/:id" component={EventForm} />
                   <Route path="/people" component={PeopleDashboard} />
                   <Route path="/profile/:id" component={UserDetailed} />
                   <Route path="/settings" component={SettingsDashboard} />
                   <Route path="/createEvent" component={EventForm} />
+                  <Route path="/test" component={TestComponent} />
                 </Switch>
               </Container>
             </div>

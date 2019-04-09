@@ -3,6 +3,7 @@
 .*/semantic/.*
 .*/src/serviceWorker\.js
 .*/src/index\.js
+.*/src/app/.*
 .*\.test\.js
 
 [include]
@@ -16,5 +17,7 @@ declare module 'semantic-ui-react' {
 
 [options]
 all=true
+module.system.node.resolve_dirname=src
+module.name_mapper='^/\(.*\)$' -> '<PROJECT_ROOT>/src\1'
 
 [strict]

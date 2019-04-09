@@ -8,11 +8,18 @@ import * as serviceWorker from './serviceWorker'
 import 'semantic-ui/dist/semantic.min.css'
 
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { configureStore } from './app/store/configureStore'
+import ScrollToTop from './app/common/util/ScrollToTop'
 
 const app = (
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <Provider store={configureStore()}>
+    <BrowserRouter>
+      <ScrollToTop>
+        <App />
+      </ScrollToTop>
+    </BrowserRouter>
+  </Provider>
 )
 
 ReactDOM.render(app, document.getElementById('root'))

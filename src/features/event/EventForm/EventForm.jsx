@@ -1,46 +1,23 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Segment, Form, Button } from 'semantic-ui-react'
+import cuid from 'cuid'
 
-type Props = {
-  handleCancel: (event: SyntheticEvent<HTMLButtonElement>) => void,
-  handleUpdateEvent: (event: SyntheticEvent<HTMLButtonElement>) => void,
-  handleSubmit: (event: any) => void,
-  selectedEvent: Object
-}
+import { eventOperations } from 'app/ducks/event'
 
 type State = {
-  event: Object,
-  selectedEvent: Object
+  event: Object
 }
 
-const emptyEvent = {
-  title: '',
-  date: '',
-  city: '',
-  venue: '',
-  hostedBy: ''
+type Props = {
+  createEvent: any => any,
+  updateEvent: any => any,
+  event?: Object
 }
 
 class EventForm extends Component<Props, State> {
   state = {
-    selectedEvent: null,
-    event: emptyEvent
-  }
-
-  componentDidMount() {
-    if (this.props.selectedEvent !== null) {
-      this.setState({ event: this.props.selectedEvent })
-    }
-  }
-
-  static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    console.log({ nextProps, prevState })
-    if (nextProps.selectedEvent !== prevState.selectedEvent) {
-      return {
-        event: nextProps.selectedEvent || emptyEvent,
-        selectedEvent: nextProps.selectedEvent || null
-      }
-    } else return null
+    event: { ...this.props.event }
   }
 
   handleInputChanged = (e: any) => {
@@ -57,13 +34,26 @@ class EventForm extends Component<Props, State> {
     })
   }
 
-  handleFormSubmit = (event: any) => (e: any) => {
+  handleFormSubmit = (event: any) => async (e: any) => {
     e.preventDefault()
-    return this.props.selectedEvent ? this.props.handleUpdateEvent(event) : this.props.handleSubmit(event)
+    try {
+      if (!this.state.event.id) {
+        event.id = cuid()
+        event.hostPhotoURL = '/assets/user.png'
+        event.attendees = []
+        event.category = ''
+        event.description = ''
+        await this.props.createEvent(event)
+      } else {
+        await this.props.updateEvent(event)
+      }
+      this.props.history.goBack()
+    } catch (e) {
+      console.error('handleFormSubmit exception', e)
+    }
   }
 
   render() {
-    const { handleCancel } = this.props
     const { event } = this.state
     return (
       <Segment>
@@ -91,7 +81,7 @@ class EventForm extends Component<Props, State> {
           <Button positive type="submit">
             Submit
           </Button>
-          <Button type="button" onClick={handleCancel}>
+          <Button type="button" onClick={this.props.history.goBack}>
             Cancel
           </Button>
         </Form>
@@ -100,4 +90,29 @@ class EventForm extends Component<Props, State> {
   }
 }
 
-export default EventForm
+function mapStateToProps(state, ownProps) {
+  let empty = {
+    title: '',
+    date: '',
+    city: '',
+    venue: '',
+    hostedBy: ''
+  }
+  const eventId = ownProps.match.params.id
+  const event = state.event.events.filter(e => e.id === eventId)[0]
+  return {
+    event: event || empty
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    createEvent: event => dispatch(eventOperations.createEvent(event)),
+    updateEvent: event => dispatch(eventOperations.updateEvent(event))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventForm)

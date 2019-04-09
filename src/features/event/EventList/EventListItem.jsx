@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Segment, Icon, Item, List, Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import EventListAttendee from './EventListAttendee'
 
 type Props = {
@@ -20,10 +21,10 @@ type Props = {
 }
 
 function EventListItem(props: Props) {
-  const { event, onEventOpen, onEventDelete } = props
-  const handleEventOpen = () => {
-    return onEventOpen(event)
-  }
+  const { event, onEventDelete } = props
+  // const handleEventOpen = () => {
+  //   return onEventOpen(event)
+  // }
   const handleEventDelete = () => {
     if (event.id) {
       return onEventDelete(event.id)
@@ -60,7 +61,7 @@ function EventListItem(props: Props) {
       <Segment clearing>
         {event.description}
         <Button onClick={handleEventDelete} as="a" color="red" floated="right" content="Delete" />
-        <Button onClick={handleEventOpen} as="a" color="teal" floated="right" content="View" />
+        <Button as={Link} to={`/event/${event.id}`} color="teal" floated="right" content="View" />
       </Segment>
     </Segment.Group>
   )

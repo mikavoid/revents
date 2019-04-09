@@ -1,9 +1,11 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import { testReducer, eventReducer } from '../ducks'
+import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
   test: testReducer,
-  event: eventReducer
+  event: eventReducer,
+  form: formReducer
 })
 
 export const configureStore = preloadedState => {

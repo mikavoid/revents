@@ -19,7 +19,8 @@ type Props = {
   category: string,
   title: string,
   date: string,
-  host: string
+  host: string,
+  id: string
 }
 
 export function EventDetailedHeader(props: Props) {

@@ -1,26 +1,54 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
+import GoogleMapReact from 'google-map-react'
+import { Icon } from 'semantic-ui-react'
 import { testOperations } from 'app/ducks/test'
 
 type Props = {
-  counter: number,
-  data: number,
-  setData: any,
+  center: {
+    lat: Number,
+    lng: Number
+  },
+  zoom: number,
   incrementCounter: any,
   decrementCounter: any
 }
 
+const Marker = () => <Icon name="marker" size="big" color="red" />
+
+// function new_script(src) {
+//   return new Promise(function(resolve, reject){
+//     var script = document.createElement('script');
+//     script.src = src;
+//     script.addEventListener('load', function () {
+//       resolve();
+//     });
+//     script.addEventListener('error', function (e) {
+//       reject(e);
+//     });
+//     document.body.appendChild(script);
+//   })
+// };
+// Promise Interface can ensure load the script only once.
+// new_script("https://maps.googleapis.com/maps/api/js?key=AIzaSyCh-6nXj4ZWOCtTl6K7tYeS_c7xg2LiGb4&libraries=places");
+
+// const GOOGLE_API_KEY = 'AIzaSyCh-6nXj4ZWOCtTl6K7tYeS_c7xg2LiGb4'
+
 class TestComponent extends Component<Props> {
+  static defaultProps = {
+    center: {
+      lat: 59.95,
+      lng: 30.33
+    },
+    zoom: 11
+  }
+
   render() {
     return (
-      <div>
-        <h1> Test component </h1>
-        <p>{this.props.data}</p>
-        <p>Counter {this.props.counter}</p>
-        <button onClick={() => this.props.setData(Math.floor(Math.random() * 99) + 1)}>Change</button>
-        <button onClick={() => this.props.incrementCounter()}>Increment</button>
-        <button onClick={() => this.props.decrementCounter()}>Decrement</button>
+      <div style={{ height: '300px', width: '100%' }}>
+        <GoogleMapReact bootstrapURLKeys={{ key: 'AIzaSyCzSo3on_8SiV6ewl-l6n7T8W7ljvpCbRE' }} defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
+          <Marker />
+        </GoogleMapReact>
       </div>
     )
   }

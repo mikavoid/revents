@@ -40,7 +40,7 @@ export function EventDetailedPage({ event = {} }: Props) {
     <Grid>
       <Grid.Column width={10}>
         <EventDetailedHeader category={event.category} title={event.title} date={event.date} host={event.hostedBy} id={event.id} />
-        <EventDetailedInfo description={event.description} date={event.date} venue={event.venue} />
+        <EventDetailedInfo description={event.description} date={event.date} venue={event.venue} venueLatLng={event.venueLatLng} />
         <EventDetailedChat />
       </Grid.Column>
       <Grid.Column width={6}>
